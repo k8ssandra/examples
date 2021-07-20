@@ -1,0 +1,61 @@
+apiVersion: cassandra.datastax.com/v1beta1
+kind: CassandraDatacenter
+metadata:
+  name: dc1
+spec:
+  clusterName: cluster1
+  serverType: dse
+  serverVersion: "6.8.13"
+  dseWorkloads:
+    searchEnabled: true
+  managementApiAuth:
+    insecure: {}
+  size: 3
+  racks:
+    - name: rack1
+      nodeAffinityLabels:
+        topology.kubernetes.io/zone: us-central1-b
+    - name: rack2
+      nodeAffinityLabels:
+        topology.kubernetes.io/zone: us-central1-f
+    - name: rack3
+      nodeAffinityLabels:
+        topology.kubernetes.io/zone: us-central1-a
+  resources:
+    requests:
+      memory: 20Gi
+      cpu: 3000m
+    limits:
+      memory: 20Gi
+      cpu: 3000m
+  storageConfig:
+    cassandraDataVolumeClaimSpec:
+      storageClassName: standard-rwo
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1024Gi
+  stopped: false
+  config:    
+    cassandra-yaml:
+      num_tokens: 8    
+      authenticator: com.datastax.bdp.cassandra.auth.DseAuthenticator
+      authorizer: com.datastax.bdp.cassandra.auth.DseAuthorizer
+      role_manager: com.datastax.bdp.cassandra.auth.DseRoleManager
+    dse-yaml:
+      authorization_options:
+        enabled: true
+      authentication_options:
+        enabled: true
+        default_scheme: internal
+    jvm-server-options:
+      initial_heap_size: "13G"
+      max_heap_size: "13G"
+      additional-jvm-opts:
+        - "-Ddse.system_distributed_replication_dc_names=dc1"
+        - "-Ddse.system_distributed_replication_per_dc=3"
+    10-write-prom-conf:
+      enabled: true
+      port: 9103
+      staleness-delta: 300

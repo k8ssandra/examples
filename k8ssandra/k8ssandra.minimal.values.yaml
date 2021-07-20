@@ -1,0 +1,47 @@
+cassandra:
+  version: "3.11.10"
+
+  cassandraLibDirVolume:
+    storageClass: standard-rwo
+    size: 1024Gi
+
+  heap:
+   size: 8G
+   newGenSize: 8G
+
+  resources:
+    requests:
+      cpu: 6000m
+      memory: 20Gi
+    limits:
+      cpu: 6000m
+      memory: 20Gi
+  
+  configOverride:
+    cassandra-yaml:
+      column_index_cache_size_in_kb: 1024
+      truncate_request_timeout_in_ms: 100
+    jvm-options:
+      use_tlb: true
+
+
+  datacenters:
+  - name: dc1
+    size: 6
+    racks:
+    - name: us-east4-a
+      affinityLabels:
+        topology.kubernetes.io/zone: us-east4-a
+    - name: us-east4-b
+      affinityLabels:
+        topology.kubernetes.io/zone: us-east4-b
+    - name: us-east4-c
+      affinityLabels:
+        topology.kubernetes.io/zone: us-east4-c
+
+stargate:
+  enabled: true
+  replicas: 3
+  heapMB: 1024
+  cpuReqMillicores: 3000
+  cpuLimMillicores: 3000
