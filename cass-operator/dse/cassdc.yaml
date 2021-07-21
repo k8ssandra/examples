@@ -6,8 +6,6 @@ spec:
   clusterName: cluster1
   serverType: dse
   serverVersion: "6.8.13"
-  dseWorkloads:
-    searchEnabled: true
   managementApiAuth:
     insecure: {}
   size: 3
@@ -17,7 +15,7 @@ spec:
         topology.kubernetes.io/zone: us-central1-b
     - name: rack2
       nodeAffinityLabels:
-        topology.kubernetes.io/zone: us-central1-f
+        topology.kubernetes.io/zone: us-central1-c
     - name: rack3
       nodeAffinityLabels:
         topology.kubernetes.io/zone: us-central1-a
