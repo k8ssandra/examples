@@ -4,7 +4,7 @@ kind: ServiceMonitor
 metadata:
   labels:
     release: monitoring
-  name: mcac-cluster
+  name: dc1-metrics
 spec:
   selector:
     matchLabels:
@@ -297,5 +297,3 @@ spec:
       targetLabel: __name__
     - action: labeldrop
       regex: prom_name
-    
-  

@@ -1,0 +1,17 @@
+- op: "add"
+  path: "/spec/template/spec/containers/0/env/0"
+  value:
+    name: GF_INSTALL_PLUGINS
+    value: grafana-polystat-panel
+- op: "add"
+  path: "/spec/template/spec/volumes/29"
+  value:
+    configMap:
+      name: k8ssandra-dashboards
+    name: k8ssandra-dashboards
+- op: "add"
+  path: "/spec/template/spec/containers/0/volumeMounts/29"
+  value:
+    mountPath: /grafana-dashboard-definitions/0/k8ssandra
+    name: k8ssandra-dashboards
+    readOnly: false

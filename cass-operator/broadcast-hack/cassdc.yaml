@@ -1,0 +1,81 @@
+apiVersion: cassandra.datastax.com/v1beta1
+kind: CassandraDatacenter
+metadata:
+  name: north
+spec:
+  clusterName: ds-demo-mdc
+  serverType: dse
+  serverVersion: "6.8.18"
+  managementApiAuth:
+    insecure: {}
+  networking:
+    # hostNetwork: true
+    nodePort:
+      internode: 31701
+      native: 31702
+  size: 3
+  racks:
+    - name: rack1
+    - name: rack2
+    - name: rack3
+  resources:
+    requests:
+      memory: 2Gi
+      cpu: 1000m
+    limits:
+      memory: 2Gi
+      cpu: 1000m
+  storageConfig:
+    cassandraDataVolumeClaimSpec:
+      storageClassName: local-path
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+  forceUpgradeRacks:
+    - rack1
+    - rack2
+    - rack3
+  podTemplateSpec:
+    spec:
+      initContainers:
+        - name: server-config-init
+        - name: cassandra-hack
+          env: 
+            - name: HOST_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.hostIP
+          image: 'datastax/dse-server:6.8.18'
+          volumeMounts:
+            - mountPath: /config
+              name: server-config
+          command:
+            - /bin/bash
+            - -c
+            - "echo \"broadcast_address: $HOST_IP\" >> /config/cassandra.yaml"
+        - name: rackdc-hack
+          image: 'datastax/dse-server:6.8.18'
+          volumeMounts:
+            - mountPath: /config
+              name: server-config
+          command:
+            - /bin/bash
+            - -c
+            - "echo \"prefer_local=true\" >> /config/cassandra-rackdc.properties"
+      containers: []
+  config:    
+    cassandra-yaml:
+      seed_provider:
+        - class_name: org.apache.cassandra.locator.SimpleSeedProvider
+          parameters:
+            - seeds: "ds-demo-mdc-north-node-port-seed-service"
+    jvm-server-options:
+      initial_heap_size: "1G"
+      max_heap_size: "1G"
+      additional-jvm-opts:
+        # As the database comes up for the first time, set system keyspaces to RF=3
+        - "-Dcassandra.system_distributed_replication_dc_names=north"
+        - "-Dcassandra.system_distributed_replication_per_dc=3"

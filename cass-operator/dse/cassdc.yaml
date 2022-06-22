@@ -5,35 +5,35 @@ metadata:
 spec:
   clusterName: cluster1
   serverType: dse
-  serverVersion: "6.8.13"
+  serverVersion: "6.8.18"
   managementApiAuth:
     insecure: {}
   size: 3
   racks:
     - name: rack1
-      nodeAffinityLabels:
-        topology.kubernetes.io/zone: us-central1-b
+      # nodeAffinityLabels:
+      #   topology.kubernetes.io/zone: us-central1-b
     - name: rack2
-      nodeAffinityLabels:
-        topology.kubernetes.io/zone: us-central1-c
+      # nodeAffinityLabels:
+      #   topology.kubernetes.io/zone: us-central1-c
     - name: rack3
-      nodeAffinityLabels:
-        topology.kubernetes.io/zone: us-central1-a
+      # nodeAffinityLabels:
+      #   topology.kubernetes.io/zone: us-central1-a
   resources:
     requests:
-      memory: 20Gi
-      cpu: 3000m
+      memory: 2Gi
+      cpu: 1000m
     limits:
-      memory: 20Gi
-      cpu: 3000m
+      memory: 10Gi
+      cpu: 1000m
   storageConfig:
     cassandraDataVolumeClaimSpec:
-      storageClassName: standard-rwo
+      storageClassName: local-path
       accessModes:
         - ReadWriteOnce
       resources:
         requests:
-          storage: 1024Gi
+          storage: 100Mi
   stopped: false
   config:    
     cassandra-yaml:
@@ -48,8 +48,8 @@ spec:
         enabled: true
         default_scheme: internal
     jvm-server-options:
-      initial_heap_size: "13G"
-      max_heap_size: "13G"
+      initial_heap_size: "1G"
+      max_heap_size: "1G"
       additional-jvm-opts:
         - "-Ddse.system_distributed_replication_dc_names=dc1"
         - "-Ddse.system_distributed_replication_per_dc=3"

@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ds-demo-mdc-north-node-port-seed-service
+  namespace: default
+  labels:
+    cassandra.datastax.com/cluster: ds-demo-mdc
+    cassandra.datastax.com/datacenter: north
+spec:
+  clusterIP: None
+  ports:
+    - name: internode
+      protocol: TCP
+      port: 31701
+      targetPort: 31701
+    - name: native
+      protocol: TCP
+      port: 31702
+      targetPort: 31702
+---
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: ds-demo-mdc-north-node-port-seed-service
+  namespace: default
+  labels:
+    cassandra.datastax.com/cluster: ds-demo-mdc
+    cassandra.datastax.com/datacenter: north
+subsets:
+  - addresses:
+      - ip: 172.19.0.2
+      - ip: 172.19.0.3
+      - ip: 172.19.0.4
+    ports:
+      - name: internode
+        port: 31701
+      - name: native
+        port: 31702

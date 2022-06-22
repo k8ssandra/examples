@@ -27,8 +27,8 @@ Metrics-server is running at https://0.0.0.0:40227/api/v1/namespaces/kube-system
 To further debug and diagnose cluster problems, use 'kubectl cluster-info dump'.
 
 # Install Helm repositories
-$ helm repo add datastax https://datastax.github.io/charts
-"datastax" has been added to your repositories
+$ helm repo add k8ssandra https://helm.k8ssandra.io/
+"k8ssandra" has been added to your repositories
 $ helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 "prometheus-community" has been added to your repositories
 $ helm repo update
@@ -47,7 +47,7 @@ kube-prometheus-stack has been installed. Check its status by running:
 Visit https://github.com/prometheus-operator/kube-prometheus for instructions on how to create & configure Alertmanager and Prometheus instances using the Operator.
 
 # Install cass-operator
-$ helm install cass-operator datastax/cass-operator
+$ helm install cass-operator k8ssandra/cass-operator
 NAME: cass-operator
 LAST DEPLOYED: Wed Jan  6 20:30:48 2021
 NAMESPACE: default
@@ -56,7 +56,7 @@ REVISION: 1
 TEST SUITE: None
 
 # Provision Cassandra cluster
-$ kubectl apply -f cluster.yaml
+$ kubectl apply -f cassdc.yaml
 cassandradatacenter.cassandra.datastax.com/dc1 created
 
 # Create service monitor and dashboards for monitoring stack

@@ -1,0 +1,47 @@
+cassandra:
+  enabled: true
+  version: "4.0.0"
+  clusterName: "demo"
+  auth:
+    enabled: true
+  cassandraLibDirVolume:
+    storageClass: "standard-rwo"
+    size: "500Gi"
+  heap:
+    size: "8G"
+    newGenSize: "8G"
+  resources:
+    requests:
+      cpu: "6000m"
+      memory: "20Gi"
+    limits:
+      cpu: "6000m"
+      memory: "20Gi"
+  datacenters:
+    - name: "dc1"
+      size: 3
+      racks:
+        - name: "us-central1-a"
+          affinityLabels:
+            topology.kubernetes.io/zone: "us-central1-a"
+        - name: "us-central1-b"
+          affinityLabels:
+            topology.kubernetes.io/zone: "us-central1-b"
+        - name: "us-central1-c"
+          affinityLabels:
+            topology.kubernetes.io/zone: "us-central1-c"
+stargate:
+  enabled: true
+  replicas: 3
+  heapMB: 5000
+  cpuReqMillicores: 1000
+  cpuLimMillicores: 1000
+reaper:
+  enabled: true
+monitoring:
+  grafana:
+    provision_dashboards: true
+  prometheus:
+    provision_service_monitors: true
+kube-prometheus-stack:
+  enabled: true

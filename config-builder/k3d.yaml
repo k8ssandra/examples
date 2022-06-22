@@ -1,0 +1,23 @@
+cassandra:
+  enabled: true
+  version: "4.0.0"
+  clusterName: "k3d"
+  cassandraLibDirVolume:
+    storageClass: "local-path"
+    size: "1Gi"
+  heap:
+    size: "1G"
+    newGenSize: "1G"
+  resources:
+    requests:
+      cpu: "1000m"
+      memory: "2Gi"
+    limits:
+      cpu: "1000m"
+      memory: "2Gi"
+  datacenters:
+    - name: "dc1"
+      size: 1
+      racks:
+        - name: "rack1"
+          affinityLabels: {}

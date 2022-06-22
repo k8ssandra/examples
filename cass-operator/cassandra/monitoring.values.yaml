@@ -1,20 +1,20 @@
 ---
-prometheus:
-  prometheusSpec:
-    externalUrl: http://localhost:9090/prometheus
-    routePrefix: /prometheus
-  ingress:
-    enabled: true
-    paths:
-      - /prometheus
+# prometheus:
+#   prometheusSpec:
+#     externalUrl: http://localhost:9090/prometheus
+#     routePrefix: /prometheus
+#   ingress:
+#     enabled: true
+#     paths:
+#       - /prometheus
 
 grafana:
-  ingress:
-    enabled: true
-    path: /grafana
+  # ingress:
+  #   enabled: true
+  #   path: /grafana
   plugins:
     - grafana-polystat-panel
-  grafana.ini:
-    server:
-      root_url: http://localhost:3000/grafana
-      serve_from_sub_path: true
+  # grafana.ini:
+  #   server:
+  #     root_url: http://localhost:3000/grafana
+  #     serve_from_sub_path: true
