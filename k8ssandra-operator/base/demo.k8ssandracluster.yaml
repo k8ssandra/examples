@@ -23,3 +23,17 @@ spec:
         stargate:
           size: 1
           heapSize: 4G
+  reaper: {}
+  # # See the Medusa docs for the appropriate values to use here https://docs-v2.k8ssandra.io/tasks/backup-restore/
+  # medusa:
+  #   storageProperties:
+  #     storageProvider: google_storage
+  #     bucketName: demo_backups
+  #     storageSecretRef:
+  #       name: ****
+  #     prefix: test
+  #     podStorage:
+  #       storageClassName: standard
+  #       accessModes:
+  #         - ReadWriteOnce
+  #       size: 100Mi
